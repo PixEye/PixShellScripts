@@ -27,7 +27,7 @@ if [ "$#" -lt $nbwp -o "$1" = "-h" ]	# Check parameters number
 then echo $e $usage 1>&2 ; exit 2	# Display message help and exit
 fi
 
-svn status --ignore-externals lib/*/ |grep ^M |cut -c9- |while read f
+svn status --ignore-externals lib/model lib/f* |grep ^M |cut -c9- |while read f
 do
         echo -n "$f "
         nb_diff_lines=`svn diff "$f"|wc -l`

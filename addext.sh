@@ -15,7 +15,7 @@ fi
 
 ext="$1" ; shift
 while [ $# -ge 1 ]
-do mv "$1" "$1.$ext" ; shift
+do mv -v "$1" "$1.$ext" ; shift
 done
 
 exit 0		# Success

@@ -1,23 +1,24 @@
 #!/bin/bash
 
 # Par Julien MOREAU aka PixEye
+#
+# vim: tabstop=8 shiftwidth=8 noet
 
 edit='-e'			# Argument qui lance l'éditeur
 last='-l'			# Argument pour afficher LA dernière ligne
-tail='-t'			# Argument pour afficher les dernières lignes
+stail='-t'			# Argument pour afficher les dernières lignes
 search='-s'			# Argument pour chercher une chaîne
-locale|grep ^'LC_MESSAGES='|grep -i utf >> /dev/null
-if [ "$?" -eq 0 ]
-then notfic=~/.notes-utf8	# Nom du fichier qui contient les notes en UTF-8
-else notfic=~/.notes-iso	# Nom du fichier qui contient les notes en ISO-8859
-fi
+notfic=~/.notes			# Nom du fichier qui contient les notes en UTF-8
 nom_cmde=`basename $0`		# Nom de la commande
-usage="Usage: $nom_cmde [$edit|$tail|$last|$search <pattern>|<phrase>]"
-usage=$usage"\n\tVous permet de prendre des notes."
-usage=$usage"\n\tL'option \"$edit\" permet de modifier le fichier $notfic\n\t"
-usage=$usage"L'option \"$tail\" permet de ne lister que la fin de ce fichier.\n"
-usage=$usage"\tL'option \"$search\" permet de chercher dans ce fichier.\n"
-usage=$usage"\tL'option \"$last\" permet de n'en lister que la derniere ligne."
+
+usage="Usage: $nom_cmde [$edit|$stail|$last|$search <pattern>|<phrase>]"
+usage=$usage"\n"
+usage=$usage"\n\tA note manager script. Options:"
+usage=$usage"\n"
+usage=$usage"\n\t\t\"$edit\" edit the note file ($notfic)."
+usage=$usage"\n\t\t\"$stail\" show the 10 last notes."
+usage=$usage"\n\t\t\"$search\" search in the notes."
+usage=$usage"\n\t\t\"$last\" show only the last note."
 
 # Pour prendre des notes (une ligne par execution)
 
@@ -32,12 +33,12 @@ if [ $nbl -lt $LINES ] ; then cmd=cat ; else cmd=less ; fi
 
 if [ "$#" -eq 0 ] ; then
 	if [ $nbl -eq 0 ] ; then
-		echo "$nom_cmde: Votre fichier de notes est vide." 1>&2
-        	echo -e $usage 1>&2 ; exit 2
+		echo "$nom_cmde: you do not have any note." 1>&2
+		echo -e $usage 1>&2 ; exit 2
 	else
 		"$cmd" "$notfic"
-		echo -e "*** Utilisez l'argument \"$edit\" pour éditer\c"
-		echo -e " directement le fichier avec $EDITOR."
+		echo -e "*** Use option \"$edit\" to edit\c"
+		echo -e " the file with $EDITOR."
 	fi
 else
 	if [ "$#" -eq 1 ] ; then
@@ -45,7 +46,7 @@ else
 		# Le "case" ne fonctionne que des constantes...	);
 		if test "$1" = "$edit" ; then
 			"$EDITOR" $opt "$notfic" ; exit $?
-		elif test "$1" = "$tail" ; then
+		elif test "$1" = "$stail" ; then
 			tail "$notfic" ; exit $?
 		elif test "$1" = "$last" ; then
 			tail -n1 "$notfic" ; exit $?
@@ -72,4 +73,3 @@ else
 fi
 
 exit 0		# Sortie sans erreur
-

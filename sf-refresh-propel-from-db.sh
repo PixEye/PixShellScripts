@@ -36,6 +36,6 @@ php symfony propel:build-filters || exit $?
 
 if test -r "data/fixtures/fixtures.yml"
 then	echo
-	echo 'You may also try:'
+	echo 'You may also have to execute:'
 	echo $e "\tphp symfony propel:data-load data/fixtures/fixtures.yml"
 fi

@@ -69,23 +69,27 @@ usage="Usage: $cmd -h"		# Message d'aide :
 usage=$usage"\n\tAffiche ce message d'aide."
 
 usage=$usage"\n\nUsage: $cmd -t|disp[lay]"
-usage=$usage"\n\tAffiche la fin ou l'intégralité du fichier de log : $log"
+usage=$usage"\n\tAffiche les 20 dernières lignes du fichier de log : $log"
+
+usage=$usage"\n\nUsage: $cmd -l"
+usage=$usage"\n\tAffiche les 2 dernières lignes du fichier de log : $log"
 
 usage=$usage"\n\nUsage: $cmd -e|edit"
 usage=$usage"\n\tEdite directement le fichier de log."
 
 usage=$usage"\n\nUsage: $cmd [-p]"
 usage=$usage"\n\tCalcule la durée de travail de la journée et l'affiche."
-usage=$usage"\n\tL'option -p force a prendre en compte le temps de pause."
+usage=$usage"\n\tL'option -p force à prendre en compte le temps de pause."
 
 usage=$usage"\n\nUsage: $cmd -s <search> [...]"
 usage=$usage"\n\tRecherche (avec grep) dans le fichier de log : $log"
 
 echo "\ntest"|grep -q ntest && e="-e"	# echo a-t'il besoin de l'option -e ?
 
+if test "$1" = '-l' ; then grep -ve ^$ "$log" |tail -n 2 ; exit $? ; fi
+if test "$1" = '-p' ; then pauseOpt=true ; shift ; else pauseOpt=false ; fi
 if test "$1" = '-s' ; then shift ; grep "$*" "$log" ; exit $? ; fi
 if test "$1" = '-t' ; then tail -n 21 "$log" ; exit $? ; fi
-if test "$1" = "-p" ; then pauseOpt=true ; shift ; else pauseOpt=false ; fi
 
 echo "$1"|grep -qE "^disp(lay)?$"
 if [ $? -eq 0 ] ; then cat "$log" ; exit $? ; fi

@@ -2,7 +2,11 @@
 
 # usage-en.sh
 
-# 20050515 PixEye@bigfoot.com	Creation
+# Created in 1998 by Julien MOREAU aka PixEye
+
+# Last commit of this file (GMT) :
+# $Id$
+# Local time: $Date$
 
 nbwp=2				# Number of wanted parameters (without options)
 cmd=`basename $0`		# Command name
@@ -14,7 +18,7 @@ usage=$usage"\n\tIf it is not correct, then display an help message."
 usage=$usage"\n\n\tThis is just the begining of any quite good shell script.\n"
 #usage=$usage"\n\t."
 
-echo "\ntest"|grep -q ntest && e="-e"	# echo a-t'il besoin de l'option -e ?
+echo "\ntest"|grep -q ntest && e="-e"	# Does 'echo' need the -e option?
 
 if [ "$#" -ne $nbwp -o "$1" = "-h" ] ; then	# Check parameters number
 	echo $e $usage 1>&2 ; exit 2		# Display message help and exit

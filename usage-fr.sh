@@ -4,8 +4,9 @@
 
 # Created in 1998 by Julien MOREAU aka PixEye
 
-# Last version under CVS (GMT time) :
-# $Header$
+# Last commit of this file (GMT) :
+# $Id$
+# Local time: $Date$
 
 nbps=2				# Nombre de paramètres souhaités (sans option)
 cmd=`basename $0`		# Nom de la commande
