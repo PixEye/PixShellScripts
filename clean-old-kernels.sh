@@ -18,9 +18,9 @@ cyan=$(tput setaf 6)
 white=$(tput setaf 7)
 
 cd /boot || exit $?
-INSTALLED_KERNELS=`ls -1tr vm*`
+INSTALLED_KERNELS=`ls -1 vm*`
 NUMBER_OF_INSTALLED_KERNELS=`echo $INSTALLED_KERNELS |wc -w`
-LAST_INSTALLED_KERNEL=`ls -1tr vm* |tail -1`
+LAST_INSTALLED_KERNEL=`ls -1 vm* |tail -1`
 CURRENT_VERSION=`uname -r`
 RUNNING_KERNEL=`ls vm*$CURRENT_VERSION`
 if test "$RUNNING_KERNEL" = "$LAST_INSTALLED_KERNEL"
