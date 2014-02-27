@@ -6,11 +6,11 @@
 
 nbps=2				# Number of wanted parameters (without option)
 cmd=`basename $0`		# Name of the command
-usage="Usage: $cmd [-h|--help]\n"	# Help message
-usage=$usage"\tDisplay this help message.\n\n"
-usage=$usage"Usage: $cmd [-b <base>] <hostname> <filename>\n"
-usage=$usage"\tInject the content of AD format file <filename>\n"
-usage=$usage"\t\tto the server <hostname>."
+usage="Usage: $cmd [-h|--help]\n\t"	# Help message
+usage=$usage"Display this help message.\n\n"
+usage=$usage"Usage: $cmd [-b <base>] <hostname> <filename>\n\t"
+usage=$usage"Inject the content of AD format file <filename.ldif>\n\t\t"
+usage=$usage"to the server <hostname>."
 
 echo "\ntest"|grep -q ntest && e="-e"	# Does echo need the -e option?
 
