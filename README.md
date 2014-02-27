@@ -1,4 +1,22 @@
 PixShellScripts
 ===============
 
-PixEye's shell scripts are Linux and/or Unix tools. I get famous with them when I was at the university.
+PixEye's `shell` scripts are Linux (debian/Ubuntu) and/or Unix (HP-UX) tools.
+
+This project is released under the GNU AFFERO GPL. See the `LICENCE` file for details.
+
+Documentation
+-------------
+
+The documentation for PixShellScripts is available on the [Github wiki](https://github.com/PixEye/PixShellScripts/wiki).
+
+Contributing
+-------------
+
+[Pull requests via Github](https://github.com/PixEye/PixShellScripts/pulls) are welcome.
+
+Issues
+------
+
+Bug reports and feature requests can be submitted on the [Github bug tracker](https://github.com/PixEye/PixShellScripts/issues).
+
