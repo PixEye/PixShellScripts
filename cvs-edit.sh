@@ -11,7 +11,6 @@
 # (c) 2003-2005 Julien Moreau
 # 2002-03 Creation
 # 2005-01 Updates
-# (c) 2005 VeePee
 
 # Last version under CVS (GMT):
 # $Header: /cvs/CVS-tools/cve.sh,v 1.6 2012-11-23 10:08:38 jmoreau Exp $
