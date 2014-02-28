@@ -18,18 +18,19 @@ usage=$usage"\n\tIf it is not correct, then display an help message."
 usage=$usage"\n\n\tThis is just the begining of any quite good shell script.\n"
 #usage=$usage"\n\t."
 
-echo "\ntest"|grep -q ntest && e="-e"	# Does 'echo' need the -e option?
+echo "\ntest"|grep ntest >> /dev/null && e="-e"	# Does echo need the -e option?
 
-if [ "$#" -ne $nbwp -o "$1" = "-h" ] ; then	# Check parameters number
-	echo $e $usage 1>&2 ; exit 2		# Display message help and exit
+if [ "$#" -ne $nbwp -o "$1" = "-h" ]	# Check parameters number
+then echo $e $usage 1>&2 ; exit 2		# Display message help and exit
 fi
 
-if test ! -r "$1" ; then	# If the file in unreadable:
-	echo $e "$cmd: \"$1\" cannot read that file!" 1>&2 ; exit 3
+if test ! -r "$1"	# If the file in unreadable:
+then echo $e "$cmd: \"$1\" cannot read that file!" 1>&2 ; exit 3
 fi
 
+# Add the main code here
 
 exit 0		# Normal exit
 
 # Prefs for vim editing:
-# vim: tabstop=8 shiftwidth=8 textwidth=80
+# vim: tabstop=8 shiftwidth=8 textwidth=80 noexpandtab

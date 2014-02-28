@@ -11,7 +11,7 @@ usage=$usage"\n\tVous permet d'ajouter une ligne à votre pense-bête."
 usage=$usage"\n\tSi le seul parametre est \"$edit\","
 usage=$usage"\n\t édite le fichier: $notfic"
 
-# Pour prendre des notes (une ligne par execution)
+# Pour prendre des notes (une ligne par exécution)
 
 tmp="/tmp/$nom_cmde.tmp"
 if test `uname -s` != "HP-UX" ; then e="-e" ; fi
@@ -70,3 +70,5 @@ else
 fi
 
 exit 0		# Sortie sans erreur
+
+# vim: tabstop=8 shiftwidth=8 noexpandtab
