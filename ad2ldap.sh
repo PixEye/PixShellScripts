@@ -8,38 +8,56 @@ nbps=2				# Number of wanted parameters (without option)
 cmd=`basename $0`		# Name of the command
 usage="Usage: $cmd [-h|--help]\n\t"	# Help message
 usage=$usage"Display this help message.\n\n"
-usage=$usage"Usage: $cmd [-b <base>] <hostname> <filename>\n\t"
+usage=$usage"Usage: $cmd [-a <access_node>] [-b <base>] [-d <bind_dn>] <hostname> <filename>\n\t"
 usage=$usage"Inject the content of AD format file <filename.ldif>\n\t\t"
-usage=$usage"to the server <hostname>."
+usage=$usage"to the server <hostname>.\n\t"
+usage=$usage"Default access_node is: CN=Users_Veepee"
 
 echo "\ntest"|grep -q ntest && e="-e"	# Does echo need the -e option?
+base=''
+bind_dn=''
+access_node=''
 
-if [ "$#" -ge 2 -a "$1" = '-b' ]
-then base=$2; shift 2
-else base=''
-fi
+# See: http://stackoverflow.com/questions/16483119/example-of-how-to-use-getopt-in-bash
+TEMP=`getopt -o a:b:d:h --long help -n '$cmd' -- "$@"`
+# Note the quotes around `$TEMP': they are essential!
+eval set -- "$TEMP"
 
-if [ "$#" -ne "$nbps" -o "$1" = '-h' -o "$1" = '--help' ] # Check parameters number
+while true
+do
+    case "$1" in
+        -a) access_node=$2 ; shift 2 ;;
+        -b) base=$2 ; shift 2 ;;
+        -d) bind_dn=$2  ; shift 2 ;;
+        --) shift ; break ;;
+        *) echo $e $usage 1>&2; exit 2 ;;	# Display help message and stop
+    esac
+done
+
+if [ "$#" -ne "$nbps" ] # Check parameters number
 then echo $e $usage 1>&2; exit 2		# Display help message and stop
 fi
 
-if [ ! -r "$2" ]	# Is the file argument exist and is readable?
+host="$1"
+input_file="$2"
+if [ ! -r "$input_file" ]	# Is the file argument exist and is readable?
 then echo $e "File \"$2\" is not readable!\n" 1>&2; echo $e $usage 1>&2; exit 3
 fi
 
-umask 077	# Protect temporary files from being accessed by other users of the system
+umask 077 # Protect temporary files from being accessed by other users of the system
 
-host="$1"
-input_file="$2"
 if [ -z "$base" ]; then base="dc=$host,dc=vp"; fi
+if [ -z "$bind_dn" ]; then bind_dn="cn=admin,$base"; fi
+if [ -z "$access_node" ]; then access_node='CN=Users_Veepee'; fi
 
 tmp_file='/tmp/'`basename "$input_file"`
 echo "Temporary file is: $tmp_file"
 echo $e -n 'Please enter the password: '
 read bindpw
 
-init_val="objectClass: inetOrgPerson\nobjectClass: OXUserObject"
-access_string='CN=Users_Veepee,'
+init_val="objectClass: inetOrgPerson\n"
+init_val=$init_val"objectClass: OXUserObject"
+access_string="$access_node,"
 nbpadded=0	# Number of persons added
 ln=0		# Line number
 
@@ -54,20 +72,26 @@ initUser
 
 function addUserAt
 {
-	if [ -z "$sn" ]; then new_person="$new_person\nsn$cn_sep $cn"; fi	# sn is missing => using cn as sn
+	if [ -z "$sn" ]	# sn is missing => using cn as sn
+    then new_person="$new_person\nsn$cn_sep $cn"
+    fi
+
 	udn="uid=$uid,ou=Users,ou=TBWA-fr,$base" # user's dn
 	echo $e "\nAdding: $cn ($udn) sn='$sn' at $1"
 	new_person="dn: $udn\n$new_person\n\ndn: ou=addr,$udn\nobjectClass: organizationalUnit\nou: addr"
 	#new_person="dn: $udn\n$new_person"	# faster but incomplete
 	echo $e $new_person |nl -ba	# to debug
-	echo $e $new_person |ldapadd -xcD "cn=admin,$base" -w "$bindpw" -h $host
+	echo $e $new_person |ldapadd -xcD "$bind_dn" -w "$bindpw" -h $host
 	ret=$?
 	if [ $ret -eq 0 ]
-	then	let nbpadded=$nbpadded+1
+	then
+        let nbpadded=$nbpadded+1
 		echo "$nbpadded person(s) added since the start of this script."
 		initUser
-	else	type xmessage >> /dev/null && xmessage -center -default okay "$cmd failed at $1."
+	else
+        type xmessage >> /dev/null && xmessage -center -default okay "$cmd failed at $1."
 	fi
+
 	return $ret
 }
 
@@ -161,3 +185,5 @@ echo "$ln lines parsed & $nbpadded person(s) added."
 type xmessage >> /dev/null && xmessage -center -default okay "$cmd is over."
 
 exit 0		# Success
+
+# vim: ts=8 sw=8 noet
