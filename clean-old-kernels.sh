@@ -80,4 +80,5 @@ if test `whoami` != 'root'
 then echo -e "$bold${red}I need root privileges in order to clean!$rst" ; exit 2
 fi
 
+# set -x # Set verbose mode
 apt-get remove --purge `dpkg -l |awk '{print $2}' |egrep "$KERNELS_TO_REMOVE"`
