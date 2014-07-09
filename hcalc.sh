@@ -10,20 +10,20 @@ function h2n () {
 	# Exemple : 10h30 => 10.5
 	param="$1"
 	echo $param|grep -qi "h:" || param=$param":00"
-	export IFS='hH:'		# separateurs possibles entre heures et minutes
+	export IFS='hH:'		# séparateurs possibles entre heures et minutes
 	set $param
-	export IFS='	 '		# separateur par defaut (espace et tabulation)
+	export IFS='	 '		# séparateur par defaut (espace et tabulation)
 	heures="$1"
 	minutes="$2"
 	#echo "$heures/$minutes"
 
-	# Enleve l'eventuel zero non significatif :
+	# Enlève l'éventuel zéro non significatif :
 	nombre=`echo $heures|sed 's|^0||'`
 
 	if test -n "$minutes"
 	then
 		##### Attention, pb avec 0<minutes<10 !!! #####
-		# Enleve l'eventuel zero non significatif :
+		# Enlève l'éventuel zéro non significatif :
 		minutes=`echo $minutes|sed 's|^0||'`
 		#echo -e "minutes=$minutes\n"
 		if test -z "$minutes"
@@ -46,9 +46,9 @@ function h2n () {
 function n2h () {
 	# Exemple : 10.5 => 10:30
 	param="$1"
-	export IFS='.,'			# separateurs decimaux possibles
+	export IFS='.,'			# séparateurs décimaux possibles
 	set $param
-	export IFS='	 '		# separateur par defaut (espace et tabulation)
+	export IFS='	 '		# séparateur par defaut (espace et tabulation)
 	heures="$1" ; decimale="$2"
 	echo "$heures/$decimale"
 
@@ -62,7 +62,7 @@ function n2h () {
 #echo "Test h2n : h2n 10h30 => ["`h2n 10h30`"]" ; exit 0	# test
 #echo "Test n2h : n2h 10.5 => ["`n2h 10.5`"]" ; echo		# moins important
 
-nbps=0					# Nombre de parametres souhaites (sans option)
+nbps=0					# Nombre de paramètres souhaites (sans option)
 cmd=`basename $0`		# Nom de la commande
 log=~/Documents/schedule.tsv	# Fichier de log (colonnes separées par des tabulations)
 usage="Usage: $cmd -h"		# Message d'aide :
@@ -107,19 +107,19 @@ fi
 umask 077
 if test ! -r "$log" ; then touch "$log" || exit $? ; fi
 
-if [ $# -ne $nbps -o "$1" = "-h" ] ; then	# Verifie le nb de parametres
-	echo $e $usage 1>&2 ; exit 2		# Affichage aide puis arret
+if [ $# -ne $nbps -o "$1" = "-h" ] # Vérifie le nb de paramètres
+then echo $e $usage 1>&2 ; exit 2  # Affichage aide puis arrêt
 fi
 
 # Crée ou ajoute le fichier :
 tee='' #; if test ! -r "$log" ; then tee="|tee -a "$log ; fi
 echo $e "Date\t\tArrivée\tRepas\tLieu\t\tPause\tDépart\tDurée"$tee
 
-# Pas cette barre dans le fichier car c'est un TSV (compatibilite) :
+# Pas cette barre dans le fichier car c'est un TSV (compatibilité) :
 echo -n "---------------+-------+-------+---------------+"
 echo "-------+-------+-----"
 
-# Supprime la derniere ligne pour la remplacer :
+# Supprime la dernière ligne pour la remplacer :
 #cp "$log" "$log~" && head -n+1 "$log" > /tmp/"$cmd.tmp" && mv -f /tmp/"$cmd.tmp" "$log"
 
 if test -z "$tee" ; then tail "$log" ; fi
@@ -138,34 +138,20 @@ harrivee="$2" ; arrivee=`h2n $harrivee`
 hrepas="$3" ; repas=`h2n $hrepas`
 lieu="$4"
 mpause=`echo $5|cut -d' ' -f1`
-pause=`h2n "0h$mpause"`
+#pause=`h2n "0h$mpause"`
+pause=`h2n $mpause`
 hdepart="$6" ; depart=`h2n $hdepart`
 if [ "$#" -ge 7 ] ; then estim="$7" ; fi
 
-export IFS='	 '		# separateur par defaut (espace et tabulation)
+export IFS='	 '		# séparateur par défaut (espace et tabulation)
 
 form="$depart - $arrivee - $repas"
 if $pauseOpt ; then form="$form - $pause" ; fi
 count=`echo $form|bc|sed -e 's|00*$||' -e 's|\.$||'`	# Calcul du nb d'heures travaillées
 
-echo -n $count|grep -q ^[1-9] || exit 0	# Resultat inferieur a zero => sortie
+echo -n $count|grep -q ^[1-9] || exit 0	# Résultat inférieur a zéro => sortie
 
-#hcount=`n2h $count`			# pas necessaire en fait
 echo $e "Nombre d'heures travaillées le $date ($form) : --->\t$count"
-
-#if test -n "$estim" ; then
-#		if test ! "$estim" = "$count" ; then
-#				echo "Y-aurait'il une erreur... ?"
-#		fi
-#fi
-
-#nbc=`echo -n $lieu|wc -c|sed 's|  *||g'`
-#if [ $nbc -lt 8 ] ; then lieu="$lieu\t" ; fi
-
-# Enregistre dans un fichier :
-#echo $e "$date\t$harrivée\t\t$hrepas\t$lieu\t$mpause min\t$hdepart\t$count"\
-#	$tee
-#echo $e "\t\t[ Enregistre dans $log ]"
 
 exit 0		# Sortie sans erreur
 
