@@ -10,13 +10,14 @@
 
 nbwp=2				# Number of wanted parameters (without options)
 cmd=`basename $0`		# Command name
-usage="Usage: $cmd [-h]"	# Help message:
-usage=$usage"\n\tDisplay this help message.\n"
-usage=$usage"\nUsage: $cmd <filename> [...]"
-usage=$usage"\n\tCheck parameters number."
-usage=$usage"\n\tIf it is not correct, then display an help message."
-usage=$usage"\n\n\tThis is just the begining of any quite good shell script.\n"
-#usage=$usage"\n\t."
+usage="Usage: $cmd [-h]\n\t"	# Help message:
+usage=$usage"Display this help message.\n"
+usage=$usage"\n"
+usage=$usage"Usage: $cmd <filename> [...]\n\t"
+usage=$usage"Check parameters number.\n\t"
+usage=$usage"If it is not correct, then display an help message.\n"
+usage=$usage"\n\t"
+usage=$usage"This is just the begining of any quite good shell script."
 
 echo "\ntest"|grep ntest >> /dev/null && e="-e"	# Does echo need the -e option?
 

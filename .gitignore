@@ -56,3 +56,5 @@ Thumbs.db
 *.zip
 mp3tag
 phpcs
+mkbosymf.sh
+reset-eligi-op-logos.sh

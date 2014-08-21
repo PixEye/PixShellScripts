@@ -8,11 +8,11 @@
 repo_dir=~/git-chechouts
 cd "$repo_dir" || exit $?
 
-for d in *
+/bin/ls -1 | while read d
 do
 	cd "$repo_dir/$d" || continue
 	git pull origin master || continue
 	cd /opt/WebSites/redmine || continue
-	# /usr/bin/ruby1.8 script/runner "Repository.fetch_changesets" -e production
-	/usr/bin/ruby script/runner "Repository.fetch_changesets" -e production
+	/usr/bin/ruby1.8 script/runner "Repository.fetch_changesets" -e production
+	# /usr/bin/ruby script/runner "Repository.fetch_changesets" -e production
 done
