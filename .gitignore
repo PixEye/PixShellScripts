@@ -3,6 +3,7 @@
 *.pl
 alert-on-php-timed-out.sh
 composer.phar
+composer
 nW*
 openACS-dbconf2files.sh
 patch-make-and-apply.sh
