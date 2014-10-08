@@ -33,6 +33,10 @@ if [ "$#" -ne $nbwp -o "$1" = "-t" ]
 then tail "$log_file" ; exit $?	# Tail of the log file
 fi
 
+if [ "$#" -ne $nbwp -o "$1" = "-l" ]
+then tail -n 2 "$log_file" ; exit $?	# Tail of the log file
+fi
+
 if test -r "$log_file"
 then
 	last_line=`tail -n1 "$log_file"`
