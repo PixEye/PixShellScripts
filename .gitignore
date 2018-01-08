@@ -4,10 +4,14 @@
 alert-on-php-timed-out.sh
 composer.phar
 composer
+mkbosymf.sh
+mp3tag
 nW*
 openACS-dbconf2files.sh
 patch-make-and-apply.sh
+phpcs
 README.txt
+reset-eligi-op-logos.sh
 *vp*
 *VP*
 
@@ -54,7 +58,3 @@ Thumbs.db
 *.rar
 *.tar
 *.zip
-mp3tag
-phpcs
-mkbosymf.sh
-reset-eligi-op-logos.sh
