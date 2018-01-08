@@ -3,7 +3,7 @@ PixShellScripts
 
 PixEye's `shell` scripts are Linux (debian/Ubuntu) and/or Unix (HP-UX) tools.
 
-This project is released under the GNU AFFERO GPL. See the `LICENSE` file for details.
+This project is released under the GNU AFFERO GPL. See the `LICENSE.txt` file for details.
 
 Documentation
 -------------
